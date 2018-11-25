@@ -1,0 +1,31 @@
+import org.apache.spark.sql.SparkSession
+
+val spark = SparkSession.builder.getOrCreate()
+
+val df = spark.read.option("header", "true").option("inferSchema", "true").csv("CitiGroup2006_2008")
+
+
+df.printSchema()
+
+//// Filting data
+//using scala
+
+import spark.implicits._
+
+//df.filter($"Close" > 480).show()
+//Liệt kê tất cả các row mà giá trị close lớn hơn 480
+//df.filter("Close > 480").show()
+
+//df.filter($"Close" < 480 && $"High" < 480).show() //scala notation
+//df.filter("Close < 480 AND High < 480").show() //sequal notation\
+
+//If we don't want to show but need to collect
+
+// val CH_low = df.filter("Close < 480 AND High < 480").collect()
+//
+// //to choose a specific value
+//
+// df.filter($"High" === 484.40).show()
+// df.filter("High = 484.40").show()
+
+df.select(corr("High", "Low")).show()

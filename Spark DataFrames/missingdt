@@ -1,0 +1,25 @@
+import org.apache.spark.sql.SparkSession
+
+val spark = SparkSession.builder.getOrCreate()
+
+val df = spark.read.option("header", "true").option("inferSchema", "true").csv("ContainsNull.csv")
+
+df.printSchema()
+
+df.show()
+// with null project:
+// keep them and limit them
+// and drop them completely
+df.show()
+//drop null value
+//df.na.drop(2).show() //drop if has 2 ContainsNull
+
+//fill the null
+df.na.fill("name").show()
+// Only fill the row has the same data type
+
+//Fill to specific colum
+
+df.na.fill("New name", Array("Name")).show()
+
+//fill the avarage value
